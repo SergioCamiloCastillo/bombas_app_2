@@ -5,11 +5,21 @@ class StationSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void goToUnitSelection(String station) {
+    void goToUnitSelection(int station) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      final operator = args['operator'] as String;
+      final date = args['date'] as String;
+      final time = args['time'] as String;
       Navigator.pushNamed(
         context,
         '/unit',
-        arguments: {'station': station},
+        arguments: {
+          'station': station,
+          'operator': operator,
+          'date': date,
+          'time': time
+        },
       );
     }
 
@@ -21,11 +31,11 @@ class StationSelectionScreen extends StatelessWidget {
         children: [
           ListTile(
             title: const Text('Estación 1'),
-            onTap: () => goToUnitSelection('Estación 1'),
+            onTap: () => goToUnitSelection(1),
           ),
           ListTile(
             title: const Text('Estación 2'),
-            onTap: () => goToUnitSelection('Estación 2'),
+            onTap: () => goToUnitSelection(2),
           ),
         ],
       ),

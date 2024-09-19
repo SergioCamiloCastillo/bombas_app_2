@@ -7,14 +7,23 @@ class DataTypeSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final station = args['station'] as String;
-    final unit = args['unit'] as String;
+    final station = args['station'] as int;
+    final unit = args['unit'] as int;
+    final operator = args['operator'] as String;
+    final date = args['date'] as String;
+    final time = args['time'] as String;
 
     void goToTemperatureScreen() {
       Navigator.pushNamed(
         context,
         '/temperature',
-        arguments: {'station': station, 'unit': unit},
+        arguments: {
+          'station': station,
+          'unit': unit,
+          'operator': operator,
+          'date': date,
+          'time': time
+        },
       );
     }
 
@@ -22,7 +31,13 @@ class DataTypeSelectionScreen extends StatelessWidget {
       Navigator.pushNamed(
         context,
         '/pressure',
-        arguments: {'station': station, 'unit': unit},
+        arguments: {
+          'station': station,
+          'unit': unit,
+          'operator': operator,
+          'date': date,
+          'time': time
+        },
       );
     }
 

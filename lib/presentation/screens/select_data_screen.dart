@@ -3,8 +3,8 @@ import 'package:bombas2/presentation/screens/temperature_screen.dart';
 import 'package:bombas2/presentation/screens/pressure_screen.dart';
 
 class SelectDataScreen extends StatelessWidget {
-  final String station;
-  final String unit;
+  final int station;
+  final int unit;
 
   const SelectDataScreen({super.key, required this.station, required this.unit});
 

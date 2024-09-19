@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bombas2/presentation/screens/select_data_screen.dart';
 
-
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
@@ -18,7 +17,8 @@ class MainScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SelectStationScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const SelectStationScreen()),
               ),
               child: const Text('Registrar Datos'),
             ),
@@ -46,7 +46,7 @@ class SelectStationScreen extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SelectUnitScreen(station: 'Estación 1'),
+                  builder: (context) => const SelectUnitScreen(station: 1),
                 ),
               ),
               child: const Text('Estación 1'),
@@ -55,7 +55,7 @@ class SelectStationScreen extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SelectUnitScreen(station: 'Estación 2'),
+                  builder: (context) => const SelectUnitScreen(station: 1),
                 ),
               ),
               child: const Text('Estación 2'),
@@ -68,7 +68,7 @@ class SelectStationScreen extends StatelessWidget {
 }
 
 class SelectUnitScreen extends StatelessWidget {
-  final String station;
+  final int station;
 
   const SelectUnitScreen({super.key, required this.station});
 
@@ -88,7 +88,7 @@ class SelectUnitScreen extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => SelectDataScreen(
                     station: station,
-                    unit: 'Unidad ${index + 1}',
+                    unit: index + 1,
                   ),
                 ),
               ),

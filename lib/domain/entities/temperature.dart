@@ -1,6 +1,6 @@
 class Temperature {
-  final String station;
-  final String unit;
+  final int station;
+  final int unit;
   final String date;
   final DateTime time;
   final String operator;

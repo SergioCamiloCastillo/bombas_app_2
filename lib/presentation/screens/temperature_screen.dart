@@ -6,11 +6,19 @@ import 'package:intl/intl.dart'; // Para el formateo de fecha y hora
 import 'package:bombas2/domain/entities/temperature.dart';
 
 class TemperatureScreen extends ConsumerWidget {
-  final String station;
-  final String unit;
+  final int station;
+  final int unit;
+  final String operator;
+  final String date;
+  final String time;
 
   const TemperatureScreen(
-      {super.key, required this.station, required this.unit});
+      {super.key,
+      required this.station,
+      required this.unit,
+      required this.operator,
+      required this.date,
+      required this.time});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,15 +31,14 @@ class TemperatureScreen extends ConsumerWidget {
     final soporteBombaController = TextEditingController();
 
     void saveTemperature() async {
-      final now = DateTime.now();
-      final date = DateFormat('yyyy-MM-dd').format(now);
-      final time = DateFormat('HH:mm').format(now);
+      final timeParse = DateFormat('yyyy-MM-dd').parse(time);
+    
 
       final temperature = Temperature(
         station: station,
         unit: unit,
         date: date,
-        time: now,
+        time: timeParse,
         operator: operatorController.text,
         cojineteSoporte: double.tryParse(cojineteSoporteController.text) ?? 0.0,
         cojineteSuperior:
@@ -48,17 +55,30 @@ class TemperatureScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Registrar Temperatura'),
+        title: const Column(
+          children: [Text('Registrar Temperatura')],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextFormField(
-              controller: operatorController,
-              decoration: const InputDecoration(labelText: 'Operador'),
+            Center(
+              child: Column(
+                children: [Text('Estacion # $station'), Text('Unidad # $unit')],
+              ),
             ),
+            const SizedBox(height: 20),
+            Column(
+              children: [
+                Text('Operador $operator'),
+                Text('Fecha $date'),
+                Text('Hora $time')
+              ],
+            ),
+            const SizedBox(height: 20),
+           
             TextFormField(
               controller: cojineteSoporteController,
               decoration: const InputDecoration(labelText: 'Cojinete Soporte'),

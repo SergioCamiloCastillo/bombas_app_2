@@ -6,8 +6,8 @@ import 'package:intl/intl.dart'; // Para el formateo de fecha y hora
 import 'package:bombas2/domain/entities/pressure.dart';
 
 class PressureDataScreen extends ConsumerWidget {
-  final String station;
-  final String unit;
+  final int station;
+  final int unit;
 
   const PressureDataScreen({super.key, required this.station, required this.unit});
 
