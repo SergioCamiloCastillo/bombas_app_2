@@ -25,6 +25,10 @@ class SelectDataScreen extends StatelessWidget {
                   builder: (context) => TemperatureScreen(
                     station: station,
                     unit: unit,
+                    operator: 'dd',
+                    date: 'dd',
+                    time: 'dd',
+
                   ),
                 ),
               ),
@@ -37,6 +41,9 @@ class SelectDataScreen extends StatelessWidget {
                   builder: (context) => TemperatureScreen(
                     station: station,
                     unit: unit,
+                    operator: 'dd',
+                    date: 'dd',
+                    time: 'dd',
                   ),
                 ),
               ),

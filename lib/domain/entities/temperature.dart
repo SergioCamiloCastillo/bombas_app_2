@@ -2,7 +2,7 @@ class Temperature {
   final int station;
   final int unit;
   final String date;
-  final DateTime time;
+  final String time;
   final String operator;
   final double cojineteSoporte;
   final double cojineteSuperior;
@@ -26,7 +26,7 @@ class Temperature {
       'station': station,
       'unit': unit,
       'date': date,
-      'time': time.toIso8601String(),
+      'time': time,
       'operator': operator,
       'cojineteSoporte': cojineteSoporte,
       'cojineteSuperior': cojineteSuperior,
@@ -40,7 +40,7 @@ class Temperature {
       station: json['station'],
       unit: json['unit'],
       date: json['date'],
-      time: DateTime.parse(json['time']),
+      time: json['time'],
       operator: json['operator'],
       cojineteSoporte: json['cojineteSoporte'],
       cojineteSuperior: json['cojineteSuperior'],

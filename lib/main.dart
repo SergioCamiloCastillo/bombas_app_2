@@ -1,4 +1,5 @@
 import 'package:bombas2/presentation/screens/data_type_selection_screen.dart';
+import 'package:bombas2/presentation/screens/date_review_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bombas2/presentation/screens/operator_screen.dart';
@@ -21,53 +22,72 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'App de Bombas',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => OperatorScreen(),
-          '/station': (context) => const StationSelectionScreen(),
-          '/unit': (context) => const UnitSelectionScreen(),
-          '/data_type': (context) => const DataTypeSelectionScreen(),
-        },
-        onGenerateRoute: (settings) {
-          final args = settings.arguments as Map<String, dynamic>?;
+      title: 'App de Bombas',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => OperatorScreen(),
+        '/station': (context) => const StationSelectionScreen(),
+        '/unit': (context) => const UnitSelectionScreen(),
+        '/data_type': (context) => const DataTypeSelectionScreen(),
+      },
+      onGenerateRoute: (settings) {
+        final args = settings.arguments as Map<String, dynamic>?;
 
-          // Convertir 'station' a int de forma segura
-          final station = args?['station'] is String
-              ? int.tryParse(args?['station'] as String) ?? 0
-              : (args?['station'] as int?) ?? 0;
-          final unit = args?['unit'] is String
-              ? int.tryParse(args?['unit'] as String) ?? 0
-              : (args?['unit'] as int?) ?? 0;
+        // Verifica que los argumentos no sean nulos
+        if (args == null) {
+          return MaterialPageRoute(
+            builder: (context) => const Scaffold(
+              body: Center(child: Text('No se recibieron argumentos')),
+            ),
+          );
+        }
 
-          switch (settings.name) {
-            case '/temperature':
-              return MaterialPageRoute(
-                builder: (context) => TemperatureScreen(
-                  station: station,
-                  unit: unit,
-                  operator: args?['operator'] as String,
-                  date: args?['date'] as String,
-                  time: args?['time'] as String,
-                ),
-              );
-            case '/pressure':
-              return MaterialPageRoute(
-                builder: (context) => PressureDataScreen(
-                  station: station,
-                  unit: unit,
-                ),
-              );
-            default:
-              return MaterialPageRoute(
-                builder: (context) => const Scaffold(
-                  body: Center(child: Text('Página no encontrada')),
-                ),
-              );
-          }
-        });
+        // Convertir 'station' y 'unit' a int de forma segura
+        final station = (args['station'] is String)
+            ? int.tryParse(args['station'] as String) ?? 0
+            : (args['station'] as int?) ?? 0;
+
+        final unit = (args['unit'] is String)
+            ? int.tryParse(args['unit'] as String) ?? 0
+            : (args['unit'] as int?) ?? 0;
+
+        switch (settings.name) {
+          case '/temperature':
+            return MaterialPageRoute(
+              builder: (context) => TemperatureScreen(
+                station: station,
+                unit: unit,
+                operator: args['operator'] as String,
+                date: args['date'] as String,
+                time: args['time'] as String,
+              ),
+            );
+          case '/pressure':
+            return MaterialPageRoute(
+              builder: (context) => PressureDataScreen(
+                station: station,
+                unit: unit,
+                operator: args['operator'] as String,
+                date: args['date'] as String,
+                time: args['time'] as String,
+              ),
+            );
+          case '/data_review':
+            return MaterialPageRoute(
+              builder: (context) =>
+                  DataReviewScreen(dataType: args['dataType'] as String),
+            );
+          default:
+            return MaterialPageRoute(
+              builder: (context) => const Scaffold(
+                body: Center(child: Text('Página no encontrada')),
+              ),
+            );
+        }
+      },
+    );
   }
 }

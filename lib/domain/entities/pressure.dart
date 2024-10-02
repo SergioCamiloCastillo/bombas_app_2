@@ -2,7 +2,7 @@ class Pressure {
   final int station;
   final int unit;
   final String date;
-  final DateTime time;
+  final String time;
   final String operator;
   final double lubricacionBomba;
   final double refrigeracionMotor;
@@ -26,7 +26,7 @@ class Pressure {
       'station': station,
       'unit': unit,
       'date': date,
-      'time': time.toIso8601String(),
+      'time': time,
       'operator': operator,
       'lubricacionBomba': lubricacionBomba,
       'refrigeracionMotor': refrigeracionMotor,
@@ -40,7 +40,7 @@ class Pressure {
       station: json['station'],
       unit: json['unit'],
       date: json['date'],
-      time: DateTime.parse(json['time']),
+      time: json['time'],
       operator: json['operator'],
       lubricacionBomba: json['lubricacionBomba'],
       refrigeracionMotor: json['refrigeracionMotor'],

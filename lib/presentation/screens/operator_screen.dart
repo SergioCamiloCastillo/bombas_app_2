@@ -22,14 +22,15 @@ class OperatorScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Registro de Operador'),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
               controller: operatorController,
-              decoration: const InputDecoration(labelText: 'Nombre del Operador'),
+              decoration:
+                  const InputDecoration(labelText: 'Nombre del Operador'),
             ),
             TextFormField(
               controller: dateController,
@@ -43,7 +44,8 @@ class OperatorScreen extends ConsumerWidget {
                   lastDate: DateTime(2101),
                 );
                 if (pickedDate != null) {
-                  dateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                  dateController.text =
+                      DateFormat('yyyy-MM-dd').format(pickedDate);
                 }
               },
             ),
@@ -69,8 +71,8 @@ class OperatorScreen extends ConsumerWidget {
                 if (operator.isNotEmpty) {
                   // Ir a la siguiente pantalla, pasando el nombre del operador, fecha y hora
                   Navigator.pushNamed(
-                    context, 
-                    '/station', 
+                    context,
+                    '/station',
                     arguments: {
                       'operator': operator,
                       'date': dateController.text,
@@ -79,12 +81,27 @@ class OperatorScreen extends ConsumerWidget {
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Por favor ingrese su nombre')),
+                    const SnackBar(
+                        content: Text('Por favor ingrese su nombre')),
                   );
                 }
               },
               child: const Text('Continuar'),
             ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/data_review',
+                    arguments: {'dataType': 'temperature'});
+              },
+              child: const Text('Revisar Datos Guardados temperatura'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/data_review',
+                    arguments: {'dataType': 'pressure'});
+              },
+              child: const Text('Revisar Datos Guardados presión'),
+            )
           ],
         ),
       ),
