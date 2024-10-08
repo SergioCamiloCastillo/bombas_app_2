@@ -145,6 +145,21 @@ class GenerateExcelScreen extends StatelessWidget {
       mergedTempCell.cellStyle.hAlign = xlsio.HAlignType.center; // Centrar
       mergedTempCell.cellStyle.vAlign = xlsio.VAlignType.center;
 
+      // Fusionar celdas de "Unidad"
+      sheet
+          .getRangeByIndex(startRow + i * 8 + 1, 1, startRow + i * 8 + 7, 1)
+          .merge();
+      var mergedUnitCell = sheet.getRangeByIndex(startRow + i * 8 + 1, 1);
+      mergedUnitCell.setText(units[i]);
+
+      // Aplicar estilo a la celda de la unidad
+      mergedUnitCell.cellStyle.backColor = '#d8d8d8'; // Color de fondo
+      mergedUnitCell.cellStyle.bold = true; // Negrita
+      mergedUnitCell.cellStyle.hAlign = xlsio.HAlignType.center; // Centrar
+      mergedUnitCell.cellStyle.vAlign =
+          xlsio.VAlignType.center; // Centrar verticalmente
+      mergedUnitCell.cellStyle.rotation = 90; // Rotar texto verticalmente
+
       // Aplicar bordes y centrado a todas las celdas de datos
       for (int row = startRow + i * 8 + 1;
           row <= startRow + i * 8 + dataHeaders2.length;
