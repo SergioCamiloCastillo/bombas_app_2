@@ -80,6 +80,9 @@ class GenerateExcelScreen extends StatelessWidget {
     // Encabezados de datos
     List<String> dataHeaders1 = [
       'Temperatura Motor (°C)', // Encabezados de Temperatura y Presión
+      'Temperatura Motor (°C)',
+      'Temperatura Motor (°C)',
+      'Temperatura Motor (°C)',
       'Presión (psi)',
       'Presión (psi)',
       'Presión (psi)',
@@ -118,36 +121,33 @@ class GenerateExcelScreen extends StatelessWidget {
       }
 
       // Colocar encabezados de datos justo debajo de "Hora"
-      // Colocar "Temperatura Motor (°C)" y "Presión (psi)" en la columna 2
-      sheet
-          .getRangeByIndex(startRow + i * 8 + 1, 2)
-          .setText('Temperatura Motor (°C)');
-      sheet.getRangeByIndex(startRow + i * 8 + 2, 2).setText('Presión (psi)');
-      sheet.getRangeByIndex(startRow + i * 8 + 3, 2).setText('Presión (psi)');
-      sheet.getRangeByIndex(startRow + i * 8 + 4, 2).setText('Presión (psi)');
-
-      // Aplicar el estilo a los encabezados de Temperatura y Presión
-      for (int j = 1; j <= 4; j++) {
-        var tempCell = sheet.getRangeByIndex(startRow + i * 8 + j, 2);
+      for (int j = 0; j < dataHeaders1.length; j++) {
+        var tempCell = sheet.getRangeByIndex(startRow + i * 8 + 1 + j, 2);
+        tempCell.setText(dataHeaders1[j]);
         tempCell.cellStyle.hAlign = xlsio.HAlignType.center; // Centrar
         tempCell.cellStyle.vAlign = xlsio.VAlignType.center;
-        tempCell.cellStyle.borders.all.lineStyle = xlsio.LineStyle.thin;
-        tempCell.cellStyle.borders.all.color = '#000000'; // Borde negro
       }
 
-      // Colocar encabezados de cojinetes en la columna correspondiente (Columna 3)
+      // Colocar encabezados de cojinetes en la tercera columna
       for (int j = 0; j < dataHeaders2.length; j++) {
-        var cojineteCell = sheet.getRangeByIndex(startRow + i * 8 + 4 + j, 3);
+        var cojineteCell = sheet.getRangeByIndex(startRow + i * 8 + 1 + j, 3);
         cojineteCell.setText(dataHeaders2[j]);
         cojineteCell.cellStyle.hAlign = xlsio.HAlignType.center; // Centrar
         cojineteCell.cellStyle.vAlign = xlsio.VAlignType.center;
-        cojineteCell.cellStyle.borders.all.lineStyle = xlsio.LineStyle.thin;
-        cojineteCell.cellStyle.borders.all.color = '#000000'; // Borde negro
       }
 
+      // Fusionar celdas de "Temperatura Motor (°C)"
+      sheet
+          .getRangeByIndex(startRow + i * 8 + 1, 2, startRow + i * 8 + 4, 2)
+          .merge();
+      var mergedTempCell = sheet.getRangeByIndex(startRow + i * 8 + 1, 2);
+      mergedTempCell.setText('Temperatura Motor (°C)');
+      mergedTempCell.cellStyle.hAlign = xlsio.HAlignType.center; // Centrar
+      mergedTempCell.cellStyle.vAlign = xlsio.VAlignType.center;
+
       // Aplicar bordes y centrado a todas las celdas de datos
-      for (int row = startRow + i * 8;
-          row <= startRow + i * 8 + dataHeaders2.length + 4;
+      for (int row = startRow + i * 8 + 1;
+          row <= startRow + i * 8 + dataHeaders2.length;
           row++) {
         for (int col = 1; col <= 28; col++) {
           var dataCell = sheet.getRangeByIndex(row, col);
