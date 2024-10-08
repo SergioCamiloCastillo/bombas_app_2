@@ -17,4 +17,16 @@ class TemperatureRepositoryImpl implements TemperatureRepository {
     final temperatureMaps = await localDataSource.getAllTemperatures();
     return temperatureMaps.map((tempMap) => Temperature.fromJson(tempMap)).toList();
   }
+  
+  @override
+  Future<List<Temperature>> getUniquePressureDates() {
+    // TODO: implement getUniquePressureDates
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<List<String>> getUniqueTemperatureDates() {
+    // TODO: implement getUniqueTemperatureDates
+    throw UnimplementedError();
+  }
 }

@@ -15,6 +15,14 @@ class PressureRepositoryImpl implements PressureRepository {
   @override
   Future<List<Pressure>> getAllPressures() async {
     final pressureMaps = await localDataSource.getAllPressures();
-    return pressureMaps.map((pressureMap) => Pressure.fromJson(pressureMap)).toList();
+    return pressureMaps
+        .map((pressureMap) => Pressure.fromJson(pressureMap))
+        .toList();
+  }
+
+  @override
+  Future<List<String>> getUniquePressureDates() async {
+    // Llama al método correspondiente en el LocalDataSource
+    return await localDataSource.getUniquePressureDates();
   }
 }

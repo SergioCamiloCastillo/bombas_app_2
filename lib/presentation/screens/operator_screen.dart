@@ -101,6 +101,12 @@ class OperatorScreen extends ConsumerWidget {
                     arguments: {'dataType': 'pressure'});
               },
               child: const Text('Revisar Datos Guardados presión'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/select_dates');
+              },
+              child: const Text('Datos de excel'),
             )
           ],
         ),

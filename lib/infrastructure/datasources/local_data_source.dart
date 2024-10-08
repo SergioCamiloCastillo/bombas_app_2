@@ -6,6 +6,8 @@ abstract class LocalDataSource {
   Future<void> insertTemperature(Map<String, dynamic> temperature);
   Future<List<Map<String, dynamic>>> getAllPressures();
   Future<List<Map<String, dynamic>>> getAllTemperatures();
+  Future<List<String>> getUniquePressureDates();
+  Future<List<String>> getUniqueTemperatureDates();
   Future<Database> get database;
 }
 
@@ -36,6 +38,18 @@ class LocalDataSourceImpl implements LocalDataSource {
   Future<List<Map<String, dynamic>>> getAllTemperatures() async {
     final db = await databaseHelper.database;
     return await db.query('temperatures');
+  }
+@override
+  Future<List<String>> getUniquePressureDates() async {
+    final db = await databaseHelper.database;
+    final result = await db.rawQuery('SELECT DISTINCT date FROM pressures');
+    return result.map((e) => e['date'] as String).toList();
+  }
+@override
+  Future<List<String>> getUniqueTemperatureDates() async {
+    final db = await databaseHelper.database;
+    final result = await db.rawQuery('SELECT DISTINCT date FROM temperatures');
+    return result.map((e) => e['date'] as String).toList();
   }
 
   @override

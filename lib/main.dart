@@ -7,6 +7,7 @@ import 'package:bombas2/presentation/screens/station_selection_screen.dart';
 import 'package:bombas2/presentation/screens/unit_selection_screen.dart';
 import 'package:bombas2/presentation/screens/temperature_screen.dart';
 import 'package:bombas2/presentation/screens/pressure_screen.dart';
+import 'package:bombas2/presentation/screens/select_date_screen.dart'; // Importa SelectDateScreen
 
 void main() {
   runApp(
@@ -32,6 +33,10 @@ class MyApp extends StatelessWidget {
         '/station': (context) => const StationSelectionScreen(),
         '/unit': (context) => const UnitSelectionScreen(),
         '/data_type': (context) => const DataTypeSelectionScreen(),
+        '/select_data': (context) => const DataTypeSelectionScreen(),
+        '/select_dates': (context) => const SelectDateScreen(),
+        '/select_date': (context) =>
+            const SelectDateScreen(), // Nueva ruta para SelectDateScreen
       },
       onGenerateRoute: (settings) {
         final args = settings.arguments as Map<String, dynamic>?;
@@ -80,6 +85,7 @@ class MyApp extends StatelessWidget {
               builder: (context) =>
                   DataReviewScreen(dataType: args['dataType'] as String),
             );
+        
           default:
             return MaterialPageRoute(
               builder: (context) => const Scaffold(
