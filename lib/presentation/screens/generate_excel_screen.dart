@@ -106,7 +106,7 @@ class GenerateExcelScreen extends StatelessWidget {
       // Fusionar las celdas "Hora" con la siguiente celda
       sheet.getRangeByIndex(startRow + i * 8, 2, startRow + i * 8, 3).merge();
       var horaCell = sheet.getRangeByIndex(startRow + i * 8, 2);
-      horaCell.setText('Hora');
+      horaCell.setText('HORA');
       horaCell.cellStyle = headerCellStyle;
 
       // Centrar horizontalmente y verticalmente el texto "Hora"
