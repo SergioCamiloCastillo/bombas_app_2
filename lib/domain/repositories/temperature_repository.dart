@@ -5,4 +5,5 @@ abstract class TemperatureRepository {
   Future<List<Temperature>> getAllTemperatures();
   Future<List<String>> getUniqueTemperatureDates();
   Future<List<Temperature>> getUniquePressureDates();
+  Future<String> getOperatorForTimeAndDate(String date, String time12h);
 }

@@ -29,4 +29,10 @@ class TemperatureRepositoryImpl implements TemperatureRepository {
     // TODO: implement getUniqueTemperatureDates
     throw UnimplementedError();
   }
+  
+  @override
+  Future<String> getOperatorForTimeAndDate(String date, String time12h) {
+    // TODO: implement getOperatorForTimeAndDate
+    throw UnimplementedError();
+  }
 }

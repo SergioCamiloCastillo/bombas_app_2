@@ -163,6 +163,7 @@ class GenerateExcelScreen extends ConsumerWidget {
         mergedUnitCell.cellStyle.bold = true;
         mergedUnitCell.cellStyle.hAlign = xlsio.HAlignType.center;
         mergedUnitCell.cellStyle.vAlign = xlsio.VAlignType.center;
+        mergedUnitCell.cellStyle.rotation = 90; // Rotar el texto 90 grados para que sea vertical
 
         // Establecer bordes para las celdas
         for (int row = startRow + i * 9 + 1;
