@@ -33,7 +33,6 @@ class _TemperatureScreenState extends ConsumerState<TemperatureScreen> {
 
   @override
   void dispose() {
-    // Limpiar los controladores al eliminar el widget
     cojineteSoporteController.dispose();
     cojineteSuperiorController.dispose();
     cojineteInferiorController.dispose();
@@ -41,9 +40,7 @@ class _TemperatureScreenState extends ConsumerState<TemperatureScreen> {
     super.dispose();
   }
 
-  // Método para guardar la temperatura
   void saveTemperature() {
-    // Validar el formulario al presionar el botón
     if (_formKey.currentState!.validate()) {
       final temperature = Temperature(
         station: widget.station,
@@ -59,15 +56,18 @@ class _TemperatureScreenState extends ConsumerState<TemperatureScreen> {
         soporteBomba: double.tryParse(soporteBombaController.text) ?? 0.0,
       );
 
-      // Guardar la temperatura
-      ref.read(temperatureRepositoryProvider).saveTemperature(temperature).then((_) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Temperatura guardada')));
-        _formKey.currentState!.reset(); // Limpiar los campos después de guardar
+      ref
+          .read(temperatureRepositoryProvider)
+          .saveTemperature(temperature)
+          .then((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Temperatura guardada')));
+        _formKey.currentState!.reset();
         Navigator.pushReplacementNamed(context, '/');
       });
     } else {
-      // Si el formulario no es válido, mostrar un mensaje de error
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Por favor, complete todos los campos obligatorios.')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Por favor, complete todos los campos obligatorios.')));
     }
   }
 
@@ -75,99 +75,182 @@ class _TemperatureScreenState extends ConsumerState<TemperatureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Registrar Temperatura'),
+        backgroundColor: const Color(0xFFF0F9FD),
+        title: const Text(
+          'Registrar Temperatura',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1E3A8A),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: _formKey, // Asignamos la clave del formulario
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: Column(
-                    children: [
-                      Text('Estación # ${widget.station}'),
-                      Text('Unidad # ${widget.unit}'),
-                    ],
+                // Card que contiene dos columnas
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        // Columna izquierda: Estación y Unidad
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildInfoRow(
+                                icon: Icons.build, // Ícono para Estación
+                                label: 'Estación: ',
+                                value: '# ${widget.station}',
+                              ),
+                              const SizedBox(height: 10),
+                              _buildInfoRow(
+                                icon: Icons
+                                    .precision_manufacturing, // Ícono para Unidad
+                                label: 'Unidad: ',
+                                value: '# ${widget.unit}',
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildInfoRow(
+                                icon: Icons.person,
+                                label: '',
+                                value: widget.operator,
+                              ),
+                              const SizedBox(height: 10),
+                              _buildInfoRow(
+                                icon: Icons.calendar_today,
+                                label: '',
+                                value: widget.date,
+                              ),
+                              const SizedBox(height: 10),
+                              _buildInfoRow(
+                                icon: Icons.access_time,
+                                label: '',
+                                value: widget.time,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 5), // Separación entre columnas
+
+                        // Columna derecha: Operador, Fecha y Hora
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                Column(
-                  children: [
-                    Text('Operador: ${widget.operator}'),
-                    Text('Fecha: ${widget.date}'),
-                    Text('Hora: ${widget.time}'),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
+
+                const Divider(height: 30, thickness: 1), // Separador visual
+
+                // Campos de temperatura
+                _buildTextField(
+                  label: 'Cojinete Soporte',
                   controller: cojineteSoporteController,
-                  decoration: const InputDecoration(labelText: 'Cojinete Soporte'),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Campo requerido'; // Mensaje de error
-                    }
-                    return null; // Si el campo es válido, retornamos null
-                  },
                 ),
-                TextFormField(
+                _buildTextField(
+                  label: 'Cojinete Superior',
                   controller: cojineteSuperiorController,
-                  decoration: const InputDecoration(labelText: 'Cojinete Superior'),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Campo requerido';
-                    }
-                    return null;
-                  },
                 ),
-                TextFormField(
+                _buildTextField(
+                  label: 'Cojinete Inferior',
                   controller: cojineteInferiorController,
-                  decoration: const InputDecoration(labelText: 'Cojinete Inferior'),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Campo requerido';
-                    }
-                    return null;
-                  },
                 ),
-                TextFormField(
+                _buildTextField(
+                  label: 'Soporte Bomba',
                   controller: soporteBombaController,
-                  decoration: const InputDecoration(labelText: 'Soporte Bomba'),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Campo requerido';
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: saveTemperature,
-                  child: const Text('Guardar'),
+
+                // Botón para guardar
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: saveTemperature,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1E3A8A),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      'Guardar',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
                 ),
-                /*ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/data_review', arguments: {'dataType': 'temperature'});
-                  },
-                  child: const Text('Revisar Datos Guardados temperatura'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/data_review', arguments: {'dataType': 'pressure'});
-                  },
-                  child: const Text('Revisar Datos Guardados presión'),
-                ),*/
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  // Método para construir un TextFormField con estilo moderno
+  Widget _buildTextField({
+    required String label,
+    required TextEditingController controller,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          filled: true,
+          fillColor: const Color(0xFFF0F9FD),
+        ),
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Campo requerido';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  // Método para construir una fila de información con ícono, etiqueta y valor
+  Widget _buildInfoRow(
+      {required IconData icon, required String label, required String value}) {
+    return Row(
+      children: [
+        Icon(icon, color: const Color(0xFF1E3A8A)),
+        const SizedBox(width: 10),
+        Text(
+          label,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: const TextStyle(fontSize: 16),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 }

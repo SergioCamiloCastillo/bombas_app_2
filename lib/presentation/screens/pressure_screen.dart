@@ -26,7 +26,6 @@ class PressureDataScreen extends ConsumerStatefulWidget {
 class _PressureDataScreenState extends ConsumerState<PressureDataScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final operatorController = TextEditingController();
   final lubricacionBombaController = TextEditingController();
   final refrigeracionMotorController = TextEditingController();
   final descargaBombaController = TextEditingController();
@@ -35,7 +34,6 @@ class _PressureDataScreenState extends ConsumerState<PressureDataScreen> {
   @override
   void dispose() {
     // Limpiar los controladores al eliminar el widget
-    operatorController.dispose();
     lubricacionBombaController.dispose();
     refrigeracionMotorController.dispose();
     descargaBombaController.dispose();
@@ -70,16 +68,8 @@ class _PressureDataScreenState extends ConsumerState<PressureDataScreen> {
         Navigator.pushReplacementNamed(context, '/');
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Por favor, complete todos los campos obligatorios.')));
-    }
-  }
-
-  // Método para navegar a la pantalla de revisión de datos
-  void navigateToDataReview(String dataType) {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(context, '/data_review', arguments: {'dataType': dataType});
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Por favor, complete todos los campos obligatorios antes de continuar.')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Por favor, complete todos los campos obligatorios.')));
     }
   }
 
@@ -87,102 +77,182 @@ class _PressureDataScreenState extends ConsumerState<PressureDataScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Registrar Presión'),
+        backgroundColor: const Color(0xFFF0F9FD),
+        title: const Text(
+          'Registrar Presión',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1E3A8A),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: _formKey, // Asignamos la clave del formulario
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: Column(
-                    children: [
-                      Text('Estación # ${widget.station}'),
-                      Text('Unidad # ${widget.unit}'),
-                    ],
+                // Card que contiene dos columnas
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        // Columna izquierda: Estación y Unidad
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildInfoRow(
+                                icon: Icons.build, // Ícono para Estación
+                                label: 'Estación: ',
+                                value: '# ${widget.station}',
+                              ),
+                              const SizedBox(height: 10),
+                              _buildInfoRow(
+                                icon: Icons
+                                    .precision_manufacturing, // Ícono para Unidad
+                                label: 'Unidad: ',
+                                value: '# ${widget.unit}',
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 20), // Separación entre columnas
+
+                        // Columna derecha: Operador, Fecha y Hora
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildInfoRow(
+                                icon: Icons.person,
+                                label: '',
+                                value: widget.operator,
+                              ),
+                              const SizedBox(height: 10),
+                              _buildInfoRow(
+                                icon: Icons.calendar_today,
+                                label: '',
+                                value: widget.date,
+                              ),
+                              const SizedBox(height: 10),
+                              _buildInfoRow(
+                                icon: Icons.access_time,
+                                label: '',
+                                value: widget.time,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                Column(
-                  children: [
-                    Text('Operador: ${widget.operator}'),
-                    Text('Fecha: ${widget.date}'),
-                    Text('Hora: ${widget.time}'),
-                  ],
-                ),
-                TextFormField(
+
+                const Divider(height: 30, thickness: 1), // Separador visual
+
+                // Campos de presión
+                _buildTextField(
+                  label: 'Lubricación Bomba',
                   controller: lubricacionBombaController,
-                  decoration:
-                      const InputDecoration(labelText: 'Lubricación Bomba'),
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Campo requerido';
-                    }
-                    return null;
-                  },
                 ),
-                TextFormField(
+                _buildTextField(
+                  label: 'Refrigeración Motor',
                   controller: refrigeracionMotorController,
-                  decoration:
-                      const InputDecoration(labelText: 'Refrigeración Motor'),
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Campo requerido';
-                    }
-                    return null;
-                  },
                 ),
-                TextFormField(
+                _buildTextField(
+                  label: 'Descarga Bomba',
                   controller: descargaBombaController,
-                  decoration:
-                      const InputDecoration(labelText: 'Descarga Bomba'),
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Campo requerido';
-                    }
-                    return null;
-                  },
                 ),
-                TextFormField(
+                _buildTextField(
+                  label: 'Sello Mecánico',
                   controller: selloMecanicoController,
-                  decoration:
-                      const InputDecoration(labelText: 'Sello Mecánico'),
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Campo requerido';
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: savePressure,
-                  child: const Text('Guardar'),
+
+                // Botón para guardar
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: savePressure,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1E3A8A),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      'Guardar',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
                 ),
-                /*ElevatedButton(
-                  onPressed: () => navigateToDataReview('temperature'),
-                  child: const Text('Revisar Datos Guardados temperatura'),
-                ),
-                ElevatedButton(
-                  onPressed: () => navigateToDataReview('pressure'),
-                  child: const Text('Revisar Datos Guardados presión'),
-                ),*/
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  // Método para construir un TextFormField con estilo moderno
+  Widget _buildTextField({
+    required String label,
+    required TextEditingController controller,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          filled: true,
+          fillColor: const Color(0xFFF0F9FD),
+        ),
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Campo requerido';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  // Método para construir una fila de información con ícono, etiqueta y valor
+  Widget _buildInfoRow(
+      {required IconData icon, required String label, required String value}) {
+    return Row(
+      children: [
+        Icon(icon, color: const Color(0xFF1E3A8A)),
+        const SizedBox(width: 10),
+        Text(
+          label,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: const TextStyle(fontSize: 16),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 }

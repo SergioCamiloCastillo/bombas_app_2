@@ -129,7 +129,12 @@ class _OperatorScreenState extends ConsumerState<OperatorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Registro de Operador'),
+        backgroundColor: const Color(0xFFF0F9FD),
+        title: const Text(
+          'Registro de Operador',
+          style:
+              TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1E3A8A)),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -239,13 +244,26 @@ class _OperatorScreenState extends ConsumerState<OperatorScreen> {
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                        content: Text('Por favor ingrese su nombre')),
+                      content: Text('Por favor ingrese su nombre'),
+                    ),
                   );
                 }
               },
-              child: const Text('Continuar'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1E3A8A),
+                foregroundColor: Colors.white,
+              ),
+              child: const Row(
+                mainAxisSize:
+                    MainAxisSize.min, // Ajusta el tamaño del botón al contenido
+                children: [
+                  Text('Continuar'),
+                  SizedBox(width: 8), // Espacio entre el texto y el icono
+                  Icon(Icons.arrow_forward),
+                ],
+              ),
             ),
-           /*ElevatedButton(
+            /*ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/data_review',
                     arguments: {'dataType': 'temperature'});
@@ -259,12 +277,24 @@ class _OperatorScreenState extends ConsumerState<OperatorScreen> {
               },
               child: const Text('Revisar Datos Guardados presión'),
             ),*/
-
+            const SizedBox(height: 40),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/select_dates');
               },
-              child: const Text('Datos de excel'),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: const Color(0xFF1E3A8A),
+              ),
+              child: const Row(
+                mainAxisSize:
+                    MainAxisSize.min, // Ajusta el tamaño del botón al contenido
+                children: [
+                  Text('Datos de excel',
+                      style: TextStyle(color: Color(0xFF1E3A8A))),
+                  SizedBox(width: 8), // Espacio entre el texto y el icono
+                  Icon(Icons.file_copy),
+                ],
+              ),
             ),
           ],
         ),
@@ -275,22 +305,23 @@ class _OperatorScreenState extends ConsumerState<OperatorScreen> {
   InputDecoration _inputDecoration(String label, IconData icon) {
     return InputDecoration(
       labelText: label,
-      labelStyle:
-          const TextStyle(color: Colors.teal), // Color del texto de la etiqueta
-      prefixIcon: Icon(icon, color: Colors.teal), // Color del icono
+      labelStyle: const TextStyle(
+          color: Color(0xFF1E3A8A)), // Color del texto de la etiqueta
+      prefixIcon: Icon(icon, color: const Color(0xFF1E3A8A)), // Color del icono
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: const BorderSide(color: Colors.teal),
+        borderSide: const BorderSide(color: Color(0xFF1E3A8A), width: 1.0),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
         borderSide: const BorderSide(
-            color: Colors.teal, width: 2.0), // Color cuando está en foco
+            color: Color(0xFF1E3A8A), width: 2.0), // Color cuando está en foco
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
         borderSide: const BorderSide(
-            color: Colors.teal, width: 1.0), // Color cuando está habilitado
+            color: Color(0xFF1E3A8A),
+            width: 1.0), // Color cuando está habilitado
       ),
     );
   }

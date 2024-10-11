@@ -16,7 +16,13 @@ class SelectDateScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Seleccionar Fecha'),
+        backgroundColor: const Color(0xFF1E3A8A),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Seleccionar Fecha',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            )),
       ),
       body: FutureBuilder<List<String>>(
         future: Future.wait([
@@ -55,18 +61,39 @@ class SelectDateScreen extends ConsumerWidget {
             return const Center(child: Text('No hay fechas disponibles.'));
           }
 
-          return ListView.builder(
-            itemCount: dates.length,
-            itemBuilder: (context, index) {
-              final date = dates[index];
-              return ListTile(
-                title: Text(date),
-                onTap: () {
-                  // Llama a la función para generar y descargar el Excel
-                  _generateAndDownloadExcel(ref, date, context);
-                },
-              );
-            },
+          return Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: ListView.builder(
+              itemCount: dates.length,
+              itemBuilder: (context, index) {
+                final date = dates[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ListTile(
+                      leading:
+                          Icon(Icons.date_range, color: Colors.blue.shade700),
+                      title: Text(
+                        date,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1E3A8A),
+                        ),
+                      ),
+                      trailing: const Icon(Icons.arrow_forward_ios,
+                          color: Color(0xFF64748B)),
+                      onTap: () =>
+                          _generateAndDownloadExcel(ref, date, context),
+                    ),
+                  ),
+                );
+              },
+            ),
           );
         },
       ),
@@ -374,7 +401,7 @@ class SelectDateScreen extends ConsumerWidget {
     await file.writeAsBytes(workbook.saveAsStream());
 
     // Mostrar un diálogo de confirmación de descarga
-    _showDownloadDialog(context, filePath);
+    _showDownloadDialog(context, 'Reporte_$date$timestamp.xlsx');
   }
 
   int getTurnForTime(String time12h) {
@@ -422,15 +449,35 @@ class SelectDateScreen extends ConsumerWidget {
   }
 
   // Método para mostrar el diálogo de confirmación de descarga
+
   void _showDownloadDialog(BuildContext context, String filePath) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Descarga Completa'),
-          content: Text('El archivo se ha descargado en:\n$filePath'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          backgroundColor: Colors.white,
+          title: const Row(
+            children: [
+              Icon(Icons.download_done, color: Colors.green, size: 24.0),
+              SizedBox(width: 10),
+              Text('Descarga Completa'),
+            ],
+          ),
+          content: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Se ha descargado el archivo en:\n$filePath',
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
+            ),
+          ),
           actions: [
             TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.blue,
+              ),
               onPressed: () {
                 Navigator.of(context).pop(); // Cerrar el diálogo
               },

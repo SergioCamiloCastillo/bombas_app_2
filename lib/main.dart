@@ -24,12 +24,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'App de Bombas',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: const Color(0xFFF0F9FD),
+        primaryColor: const Color(0xFF1E3A8A),
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => OperatorScreen(),
+        '/': (context) => const OperatorScreen(),
         '/station': (context) => const StationSelectionScreen(),
         '/unit': (context) => const UnitSelectionScreen(),
         '/data_type': (context) => const DataTypeSelectionScreen(),
@@ -85,7 +87,7 @@ class MyApp extends StatelessWidget {
               builder: (context) =>
                   DataReviewScreen(dataType: args['dataType'] as String),
             );
-        
+
           default:
             return MaterialPageRoute(
               builder: (context) => const Scaffold(
