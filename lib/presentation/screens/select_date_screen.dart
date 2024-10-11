@@ -309,6 +309,60 @@ class SelectDateScreen extends ConsumerWidget {
           }
         }
       }
+
+      // --- AGREGAR OPERADORES AL FINAL DEL CUADRO ---
+      int finalRow = startRow +
+          unitsName.length * 9 +
+          2; // Definir el inicio para los operadores
+
+      // Insertar etiquetas de turno
+      sheet
+          .getRangeByIndex(finalRow, 2)
+          .setText('Operador Turno 1 (00:00 - 07:00)');
+      sheet
+          .getRangeByIndex(finalRow + 1, 2)
+          .setText('Operador Turno 2 (07:00 - 15:00)');
+      sheet
+          .getRangeByIndex(finalRow + 2, 2)
+          .setText('Operador Turno 3 (15:00 - 24:00)');
+
+      // Obtener los operadores filtrados por turno
+      for (int turno = 1; turno <= 3; turno++) {
+        var filteredPressureData = pressureData.where((entry) {
+          final String entryTime =
+              (entry['time'].toString().replaceAll(RegExp(r'\s+'), ''));
+          print('entry presuure time essss=>$entryTime');
+          print('el getTurnForTime(entryTime)=>${getTurnForTime(entryTime)}');
+          return getTurnForTime(entryTime) == turno;
+        }).toList();
+
+        var filteredTemperatureData = temperatureData.where((entry) {
+          final String entryTime =
+              (entry['time'].toString().replaceAll(RegExp(r'\s+'), ''));
+          print('entry time tempe essss=>$entryTime');
+          print('turno es=>${getTurnForTime(entryTime)}');
+          print('turno 2es=>$turno');
+          return getTurnForTime(entryTime) == turno;
+        }).toList();
+        print('filteredTemperatureDataaaa: $filteredTemperatureData');
+        print('filteredPressureDataaaa: $filteredPressureData');
+        // Llenar operador si hay datos
+        final pressureOperator = filteredPressureData.firstWhere(
+            (entry) => entry['operator'].toString().isNotEmpty,
+            orElse: () => {'operator': ''})['operator'];
+
+        // Encontrar el primer operador no vacío en los datos de temperatura
+        final temperatureOperator = filteredTemperatureData.firstWhere(
+            (entry) => entry['operator'].toString().isNotEmpty,
+            orElse: () => {'operator': ''})['operator'];
+
+        // Insertar el nombre del operador en la fila correspondiente al turno
+        var operatorRow = finalRow + (turno - 1);
+        sheet.getRangeByIndex(operatorRow, 3).setText(
+            pressureOperator.isNotEmpty
+                ? pressureOperator
+                : (temperatureOperator.isNotEmpty ? temperatureOperator : ''));
+      }
     }
 
     // Guardar el archivo
@@ -321,6 +375,50 @@ class SelectDateScreen extends ConsumerWidget {
 
     // Mostrar un diálogo de confirmación de descarga
     _showDownloadDialog(context, filePath);
+  }
+
+  int getTurnForTime(String time12h) {
+    // Convertir la hora a turno
+    List<String> firstShifts = [
+      '0:00AM',
+      '1:00AM',
+      '2:00AM',
+      '3:00AM',
+      '4:00AM',
+      '5:00AM',
+      '6:00AM'
+    ];
+    List<String> secondShifts = [
+      '7:00AM',
+      '8:00AM',
+      '9:00AM',
+      '10:00AM',
+      '11:00AM',
+      '12:00PM',
+      '1:00PM',
+      '2:00PM',
+      '3:00PM'
+    ];
+    List<String> thirdShifts = [
+      '4:00PM',
+      '5:00PM',
+      '6:00PM',
+      '7:00PM',
+      '8:00PM',
+      '9:00PM',
+      '10:00PM',
+      '11:00PM'
+    ];
+
+    if (firstShifts.contains(time12h)) {
+      return 1; // Turno 1
+    } else if (secondShifts.contains(time12h)) {
+      return 2; // Turno 2
+    } else if (thirdShifts.contains(time12h)) {
+      return 3; // Turno 3
+    } else {
+      return 0; // Sin turno asignado
+    }
   }
 
   // Método para mostrar el diálogo de confirmación de descarga

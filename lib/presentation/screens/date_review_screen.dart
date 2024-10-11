@@ -48,6 +48,7 @@ class DataReviewScreen extends ConsumerWidget {
                         Text('Unidad: ${item['unit']}'),
                         Text('Fecha: ${item['date']}'),
                         Text('Hora: ${item['time']}'),
+                        Text('Operador: ${item['operator']}'),
                         if (dataType == 'pressure') ...[
                           Text('Lubricación Bomba: ${item['lubricacionBomba']}'),
                           Text('Refrigeración Motor: ${item['refrigeracionMotor']}'),

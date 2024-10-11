@@ -151,7 +151,7 @@ class _TemperatureScreenState extends ConsumerState<TemperatureScreen> {
                   onPressed: saveTemperature,
                   child: const Text('Guardar'),
                 ),
-                ElevatedButton(
+                /*ElevatedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/data_review', arguments: {'dataType': 'temperature'});
                   },
@@ -162,7 +162,7 @@ class _TemperatureScreenState extends ConsumerState<TemperatureScreen> {
                     Navigator.pushNamed(context, '/data_review', arguments: {'dataType': 'pressure'});
                   },
                   child: const Text('Revisar Datos Guardados presión'),
-                ),
+                ),*/
               ],
             ),
           ),

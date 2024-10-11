@@ -52,7 +52,7 @@ class _PressureDataScreenState extends ConsumerState<PressureDataScreen> {
         unit: widget.unit,
         date: widget.date,
         time: widget.time,
-        operator: operatorController.text,
+        operator: widget.operator,
         lubricacionBomba:
             double.tryParse(lubricacionBombaController.text) ?? 0.0,
         refrigeracionMotor:
@@ -170,14 +170,14 @@ class _PressureDataScreenState extends ConsumerState<PressureDataScreen> {
                   onPressed: savePressure,
                   child: const Text('Guardar'),
                 ),
-                ElevatedButton(
+                /*ElevatedButton(
                   onPressed: () => navigateToDataReview('temperature'),
                   child: const Text('Revisar Datos Guardados temperatura'),
                 ),
                 ElevatedButton(
                   onPressed: () => navigateToDataReview('pressure'),
                   child: const Text('Revisar Datos Guardados presión'),
-                ),
+                ),*/
               ],
             ),
           ),

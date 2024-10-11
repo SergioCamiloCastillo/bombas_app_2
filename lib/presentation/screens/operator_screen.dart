@@ -245,13 +245,13 @@ class _OperatorScreenState extends ConsumerState<OperatorScreen> {
               },
               child: const Text('Continuar'),
             ),
-           ElevatedButton(
+           /*ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/data_review',
                     arguments: {'dataType': 'temperature'});
               },
               child: const Text('Revisar Datos Guardados temperatura'),
-            ), /*
+            ), 
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/data_review',
